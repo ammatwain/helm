@@ -111,12 +111,12 @@ public:
     forcedinline uint8 getGreen() const noexcept      { return components.g; }
     forcedinline uint8 getBlue() const noexcept       { return components.b; }
 
-   #if JUCE_GCC
-    // NB these are here as a workaround because GCC refuses to bind to packed values.
-    forcedinline uint8& getAlpha() noexcept           { return comps [indexA]; }
-    forcedinline uint8& getRed() noexcept             { return comps [indexR]; }
-    forcedinline uint8& getGreen() noexcept           { return comps [indexG]; }
-    forcedinline uint8& getBlue() noexcept            { return comps [indexB]; }
+#if JUCE_GCC
+    // Work around GCC's inability to bind references directly to packed fields.
+    forcedinline uint8& getAlpha() noexcept { return *((uint8*) comps + indexA); }
+    forcedinline uint8& getRed() noexcept   { return *((uint8*) comps + indexR); }
+    forcedinline uint8& getGreen() noexcept { return *((uint8*) comps + indexG); }
+    forcedinline uint8& getBlue() noexcept  { return *((uint8*) comps + indexB); }
    #else
     forcedinline uint8& getAlpha() noexcept           { return components.a; }
     forcedinline uint8& getRed() noexcept             { return components.r; }
